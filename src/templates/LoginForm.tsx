@@ -12,22 +12,16 @@ import axios from "axios"
 
 const schema = z
   .object({
-    name: z.string(),
     email: z.string()
       .email("Digite um email valido")
       .nonempty("Email obrigatório"),
     password: z.string()
       .min(6, "A senha precisa de pelo menos 6 caracteres"),
-    confirmPassword: z.string()
-  })
-  .refine((fields) => fields.password === fields.confirmPassword, {
-    path: ['confirmPassword'],
-    message: 'As senhas precisam ser iguais'
   })
 
 type FormProps = z.infer<typeof schema>
 
-const RegisterForm = () => {
+const LoginForm = () => {
 
   const [isloading, setIsLoading] = useState(false)
 
@@ -79,22 +73,14 @@ const RegisterForm = () => {
           bg-gray-100
           flex
           flex-col
-          gap-2
+          gap-8
           h-full
         "
       >
         <Heading
-          title="Registre-se"
-          subtitle="Crie sua conta para entrar no site"
+          title="Login"
+          subtitle="Entre usando sua conta já criada"
           isDark
-        />
-        <Input
-          register={register}
-          id="name"
-          label="Nome"
-          type="text"
-          disabled={isloading}
-          error={errors.name}
         />
 
         <Input
@@ -115,16 +101,6 @@ const RegisterForm = () => {
           error={errors.password}
         />
 
-        <Input
-          register={register}
-          id="confirmPassword"
-          label="ConfirmPassword"
-          type="password"
-          disabled={isloading}
-          error={errors.confirmPassword}
-        />
-
-
         <span
           className="
             text-lg
@@ -132,16 +108,16 @@ const RegisterForm = () => {
             mt-12
           "
         >
-          Possui uma conta?
+          Não possui uma conta?
           <Link
-            href={"/login"}
+            href={"/"}
             className="
               text-green-600
               underline
               text-xl
             "
           >
-            Logar
+            Registre-se
           </Link>
         </span>
         <Button
@@ -154,4 +130,4 @@ const RegisterForm = () => {
   )
 }
 
-export default RegisterForm
+export default LoginForm
