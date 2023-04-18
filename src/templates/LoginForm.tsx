@@ -9,6 +9,8 @@ import { Button } from "../components/button"
 import Heading from "@/components/Heading"
 import Link from "next/link"
 import axios from "axios"
+import {signIn} from 'next-auth/react'
+import { useRouter } from "next/navigation"
 
 const schema = z
   .object({
@@ -25,6 +27,8 @@ const LoginForm = () => {
 
   const [isloading, setIsLoading] = useState(false)
 
+  const router = useRouter()
+
   const {
     handleSubmit,
     register,
@@ -39,10 +43,8 @@ const LoginForm = () => {
     setIsLoading(true)
 
     try {
-      const response = await axios.post('/api/register', data)
-
-      console.log(response.data)
-      alert('Funcionou')
+      await signIn('credentials', data)
+      .then(() => alert('Funcionou'))
     } catch (error) {
       console.log(error)
       alert('falha')
