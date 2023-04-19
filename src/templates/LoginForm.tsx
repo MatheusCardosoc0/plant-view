@@ -8,8 +8,7 @@ import { Input } from "../components/inputs"
 import { Button } from "../components/button"
 import Heading from "@/components/Heading"
 import Link from "next/link"
-import axios from "axios"
-import {signIn} from 'next-auth/react'
+import { signIn } from 'next-auth/react'
 import { useRouter } from "next/navigation"
 
 const schema = z
@@ -43,8 +42,20 @@ const LoginForm = () => {
     setIsLoading(true)
 
     try {
-      await signIn('credentials', data)
-      .then(() => alert('Funcionou'))
+      await signIn('credentials', {
+        ...data,
+        redirect: false
+      })
+        .then((callback) => {
+          if (callback?.ok) {
+            alert('Funcionou')
+            router.push('/dashboard')
+          }
+
+          if (callback?.error) {
+            alert(callback.error)
+          }
+        })
     } catch (error) {
       console.log(error)
       alert('falha')
